@@ -2,7 +2,7 @@
 let items ;
 
 async function myFetch( ){
-let response =await fetch("https://jimbex.github.io/webboard/africa100.json")
+let response =await fetch("https://jimbex.github.io/webboard/test.json")
 const songs = await response.json();
 return songs;
 }
