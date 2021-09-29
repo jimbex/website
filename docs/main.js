@@ -32,39 +32,71 @@
 let items ;
 
 async function myFetch( ){
-let response =await fetch("https://jimbex.github.io/webboard/africa100.json")
+let response =await fetch("https://jimbex.github.io/webboard/test.json")
 const songs = await response.json();
 return songs;
 }
 myFetch().then(songs =>{ 
-    items = songs
+      const html = songs.map(user=>{
+    
+    return`
+    <div class="row">
+
+    
+    <div class="col-6 d-flex">
+        <div class="col-2">
+            <h5> ${user.rank}</h5>
+            <small>
+                <i class="bi bi-arrow-up text-success Fw-bold h5"></i>
+            </small>                    
+        </div>
+        <div class="col-10">
+            <h6> ${user.song}</h6>
+            <small> ${user.artist}</small>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="row">
+            <div class="col-2"> ${user.rank}</div>
+            <div class="col-2">
+                <h6>
+               
+                </h6>
+            </div>
+            <div class="col-2">
+                <h6>
+                    1
+                </h6>
+            </div>
+            <div class="col-2">
+                <h6>
+                ${user['Previous week']}
+                </h6>
+            </div>
+            <div class="col-2">
+                <h6>
+                ${user["weeks on chart"]}
+                </h6>
+            </div>
+            <!--here sha , since image is not part of the api it will just duplicate -->
+            <div class="col-2">
+                            <img src="https://charts-static.billboard.com/img/2003/03/kanye-west-0wf-155x155.jpg" class="img-fluid"
+                                 alt="">
+                        </div>
+
+                        <div class="col-2">
+                        <img src="https://charts-static.billboard.com/img/2021/06/walker-hayes-3ec-fancy-like-9nl-155x155.jpg" class="img-fluid"
+                             alt="">
+                    </div>
+           </div>
+        </div>
+    </div> `   
+  })
+  .join("")
+document.querySelector(".card1").insertAdjacentHTML("afterbegin", html)
    })
    
-//    const html = items.map(user=>{
-    
-//     return `
-   
-//      <div class="row">
-           
-//            <div class="cell">
-//                ${user['Previous week']}
-//            </div>
-//            <div class="cell">
-//                ${user.artist}
-//            </div>
-//             <div class="cell">
-//                ${user.song}
-//            </div>
-//             <div class="cell">
-//                ${user["weeks on chart"]}
-//            </div>
-//        </div>`
-       
-    
-    
-//   })
-//   .join("")
-// document.querySelector(".table").insertAdjacentHTML("beforeend", html)
+
 
 
 console.log(items)
