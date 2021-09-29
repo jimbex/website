@@ -101,3 +101,4 @@ document.querySelector(".card1").insertAdjacentHTML("afterbegin", html)
 
 console.log(items)
 
+
