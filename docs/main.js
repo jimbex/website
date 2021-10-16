@@ -30,19 +30,30 @@
 //     })()
 
 let items ;
-
-async function myFetch( ){
-let response =await fetch("https://jimbex.github.io/webboard/test.json")
-const songs = await response.json();
-return songs;
-}
-myFetch().then(songs =>{ 
-      const html = songs.map(user=>{
+Promise.all([
+	fetch("https://jimbex.github.io/webboard/africa100.json"),
+	fetch("https://jimbex.github.io/webboard/africapic.json")
+]).then(function (responses) {
+	// Get a JSON object from each of the responses
+	return Promise.all(responses.map(function (response) {
+		return response.json();
+	}));
+}).then(function (data) {
+	
+ let op = data[0].map((e,i)=>{
+  let temp = data[1].find(element=> element.rank === e.rank)
+  if(temp.image) {
+    e.image = temp.image;
+  }
+  return e;
+})
+console.log(op);
+ 
+const html = op.map(user=>{
     
     return`
+    <div class="card ">
     <div class="row">
-
-    
     <div class="col-6 d-flex">
         <div class="col-2">
             <h5> ${user.rank}</h5>
@@ -56,7 +67,7 @@ myFetch().then(songs =>{
         </div>
     </div>
     <div class="col-6">
-        <div class="row">
+        <div class="row list">
             <div class="col-2"> ${user.rank}</div>
             <div class="col-2">
                 <h6>
@@ -78,27 +89,49 @@ myFetch().then(songs =>{
                 ${user["weeks on chart"]}
                 </h6>
             </div>
-            <!--here sha , since image is not part of the api it will just duplicate -->
+
             <div class="col-2">
-                            <img src="https://charts-static.billboard.com/img/2003/03/kanye-west-0wf-155x155.jpg" class="img-fluid"
+                            <img src=${user.image} class="img-fluid"
                                  alt="">
                         </div>
-
-                        <div class="col-2">
-                        <img src="https://charts-static.billboard.com/img/2021/06/walker-hayes-3ec-fancy-like-9nl-155x155.jpg" class="img-fluid"
-                             alt="">
-                    </div>
+            </div>
+           
            </div>
         </div>
     </div> `   
   })
   .join("")
-document.querySelector(".card1").insertAdjacentHTML("afterbegin", html)
-   })
+document.querySelector(".card1").insertAdjacentHTML("beforeend", html)
+   
    
 
 
 
-console.log(items)
+//    async function myFetchimg( ){
+//     let response =await fetch("https://jimbex.github.io/webboard/africapic.json")
+//     const images = await response.json();
+//     return images;
+//     }
+//     myFetchimg().then(images =>{ 
+//           const img = images.map(pic=>{
+        
+//         return`
+//         <div  class="col-2">
+//         <img src=${pic.image} class="img-fluid"
+//         alt="">
+//         </div
+//         `   
+//       })
+//       .join("")
+//     document.querySelector(".card1").insertAdjacentHTML("beforeend", img)
+//        })
+    
 
 
+
+
+
+}).catch(function (error) {
+	// if there's an error, log it
+	console.log(error);
+});
